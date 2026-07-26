@@ -1,1 +1,5 @@
-{"name":"cutedyno","description":"Schedule and publish social posts with CuteDyno","version":"1.0.0"}
+{
+  "name": "cutedyno",
+  "description": "Schedule and publish social posts with CuteDyno",
+  "version": "1.0.0"
+}
