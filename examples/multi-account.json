@@ -1,0 +1,12 @@
+{
+  "profileId": "prof_REPLACE_ME",
+  "content": "Launch day across every channel",
+  "accountIds": ["acct_instagram", "acct_linkedin", "acct_tiktok"],
+  "media": [
+    {
+      "url": "https://cdn.cutedyno.com/media/clip.mp4",
+      "type": "video"
+    }
+  ],
+  "publishNow": true
+}
