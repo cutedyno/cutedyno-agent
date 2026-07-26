@@ -1,6 +1,6 @@
 ---
 name: cutedyno
-version: 1.0.0
+version: 1.1.0
 description: >-
   Publish and schedule social posts for TikTok, Instagram, Facebook, LinkedIn,
   and YouTube via REST API, hosted MCP, stdio MCP, or JSON CLI. Trigger for:
@@ -116,7 +116,7 @@ Use CuteDyno when the user wants to publish, schedule, or manage social posts ac
 
 1. **Discover context** — Run `cutedyno profiles:list` and `cutedyno accounts:list` to see which profiles and accounts are available.
 2. **Check policy** — Run `cutedyno policy:get` before publishing to a new profile. Respect rate limits and guardrails.
-3. **Upload media** — Run `cutedyno media:upload` before image or video posts. Posts need a public media URL.
+3. **Upload media** — For local files, run `cutedyno media:upload`. For AI agents without file access, run `cutedyno media:upload-session`, send the user to `uploadUrl`, then poll `cutedyno media:upload-session:get`.
 4. **Create** — Use `cutedyno posts:create` with a JSON body matching the OpenAPI spec, or quick flags for text posts.
 5. **Publish** — Use `cutedyno posts:publish` for drafts, or pass `--now` / `scheduledAt` on create.
 
@@ -156,7 +156,11 @@ cutedyno posts:create -c "Hello from CuteDyno" -a acct_1 --profile "$PROFILE" --
 | `accounts:list` | Connected social accounts |
 | `accounts:connect --platform` | Start OAuth (returns `authUrl`) |
 | `policy:get` | Posting policy and limits |
-| `media:upload --file` | Upload media, returns `{ publicUrl }` |
+| `media:upload --file` | Upload local media, returns `{ publicUrl }` |
+| `media:upload-session` | Create browser upload link for agents |
+| `media:upload-session:get --id` | Poll upload session until complete |
+| `analytics:get` | Live account metrics |
+| `analytics:history --from --to` | Timeseries, top content, insights |
 | `posts:create --json` | Create post (body matches OpenAPI) |
 | `posts:create -c "Hello" -a acct_1 --now` | Quick text post |
 | `posts:list` | List posts |
@@ -179,7 +183,7 @@ cutedyno posts:list --profile "$PROFILE" --status failed | jq '.posts[] | {id, s
 ## Rules for agents
 
 1. **Auth first** — Run `cutedyno auth:status` (or confirm MCP auth) before other commands in a new session.
-2. **Upload before media posts** — Call `media:upload` before image or video posts.
+2. **Upload before media posts** — Use `media:upload` for local files, or `media:upload-session` + `media:upload-session:get` when the user uploads in a browser.
 3. **Policy before publish** — Call `policy:get` before publishing to a new profile.
 4. **Pass profileId** — When the API key covers multiple customers, always pass `--profile`.
 5. **Prefer hosted MCP** — When npm binaries are unavailable, use `https://api.cutedyno.com/mcp`.
